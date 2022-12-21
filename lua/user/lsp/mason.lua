@@ -1,16 +1,19 @@
 local mason_status_ok, mason = pcall(require, "mason")
 if not mason_status_ok then
+  vim.notify("mason not found")
   return
 end
 
 local mason_config_status_ok, mason_lspconfig = pcall(require, "mason-lspconfig")
 if not mason_config_status_ok then
+  vim.notify("mason-lspconfig not found")
   return
 end
 
 local servers = {
   "sumneko_lua",
   "rust_analyzer",
+  "eslint",
   "tsserver",
   "pyright",
   "bashls",
@@ -20,6 +23,7 @@ local servers = {
   "solang",
   "solc",
   "solidity",
+  "marksman",
 }
 
 local settings = {
@@ -41,10 +45,9 @@ table.insert(servers, "solidity_ls")
 
 local lspconfig_status_ok, lspconfig = pcall(require, "lspconfig")
 if not lspconfig_status_ok then
+  vim.notify("lspconfig not found")
   return
 end
-
-local opts = {}
 
 for _, server in pairs(servers) do
   opts = {
@@ -64,11 +67,27 @@ for _, server in pairs(servers) do
   if server == "rust_analyzer" then
     local rust_tools_status_ok, rust_tools = pcall(require, "rust-tools")
     if not rust_tools_status_ok then
+      vim.notify("rust-tools not found")
+      return
+    end
+    local rust_tools_config_status_ok, rust_tools_conf = pcall(require, "user.lsp.settings.rust_analyzer")
+    if not rust_tools_config_status_ok then
+      vim.notify("user.lsp.settings.rust_analyzer not found")
       return
     end
 
-    rust_tools.setup(conf_opts)
+    rust_tools.setup(rust_tools_conf)
     goto continue
+  end
+
+  if server == "gopls" then
+    local gopls_status_ok, gopls = pcall(require, "user.lsp.settings.gopls")
+    if not gopls_status_ok then
+      vim.notify("user.lsp.settings.gopls not found")
+      return
+    end
+    opts.on_attach = gopls.on_attach
+    opts.settings = gopls.settings
   end
 
   lspconfig[server].setup(opts)

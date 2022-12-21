@@ -2,10 +2,9 @@ local M = {}
 
 local status_cmp_ok, cmp_nvim_lsp = pcall(require, "cmp_nvim_lsp")
 if not status_cmp_ok then
+  vim.notify("cmp_nvim_lsp not found")
 	return
 end
-
-local augroup = vim.api.nvim_create_augroup("LspFormatting", {})
 
 M.capabilities = vim.lsp.protocol.make_client_capabilities()
 M.capabilities.textDocument.completion.completionItem.snippetSupport = true
@@ -19,12 +18,8 @@ M.setup = function()
 		underline = true,
 		severity_sort = true,
 		float = {
-			focusable = true,
 			style = "minmal",
 			border = "rounded",
-			source = "if_many",
-			header = "",
-			prefix = "",
 		},
 	}
 
@@ -41,6 +36,7 @@ end
 local function lsp_highlight_document(client)
 	local status_ok, illuminate = pcall(require, "illuminate")
 	if not status_ok then
+    vim.notify("illuminate not found")
 		return
 	end
 	illuminate.on_attach(client)

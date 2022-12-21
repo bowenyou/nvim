@@ -1,19 +1,21 @@
 local cmp_status_ok, cmp = pcall(require, "cmp")
 if not cmp_status_ok then
-	return
+  vim.notify("cmp not found")
+  return
 end
 
 local snip_status_ok, luasnip = pcall(require, "luasnip")
 if not snip_status_ok then
-	return
+  vim.notify("luasnip not found")
+  return
 end
-
-require("luasnip/loaders/from_vscode").lazy_load()
 
 local check_backspace = function()
 	local col = vim.fn.col(".") - 1
 	return col == 0 or vim.fn.getline("."):sub(col, col):match("%s")
 end
+
+require("luasnip/loaders/from_vscode").lazy_load()
 
 cmp.setup({
 	snippet = {
@@ -62,13 +64,14 @@ cmp.setup({
 			"s",
 		}),
 	}),
-	sources = {
+	sources = cmp.config.sources({
 		{ name = "nvim_lsp" },
-		{ name = "nvim_lua" },
-		{ name = "luasnip" },
-		{ name = "buffer" },
-		{ name = "path" },
-	},
+    { name = "nvim_lsp_signature_help" },
+    { name = "path" },
+    { name = "buffer" },
+    { name = "luasnip" },
+    { name = "nvim_lua" },
+	}),
 	confirm_opts = {
 		behavior = cmp.ConfirmBehavior.Replace,
 		select = false,

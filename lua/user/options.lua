@@ -1,6 +1,6 @@
 vim.opt.backup = false
 vim.opt.clipboard = "unnamedplus"
-vim.opt.cmdheight = 2
+vim.opt.cmdheight = 1
 vim.opt.completeopt = { "menuone", "noselect", "noinsert" }
 vim.opt.conceallevel = 0
 vim.opt.fileencoding = "utf-8"
@@ -9,8 +9,8 @@ vim.opt.ignorecase = true
 vim.opt.mouse = "a"
 vim.opt.pumheight = 10
 vim.opt.showmode = true
-vim.opt.showtabline = 2
 vim.opt.smartcase = true
+vim.opt.showtabline = 2
 vim.opt.smartindent = true
 vim.opt.splitbelow = true
 vim.opt.splitright = true
@@ -36,3 +36,4 @@ vim.opt.guifont = { "SauceCodePro Nerd Font", "h13" }
 vim.opt.shortmess:append "c"
 vim.cmd "set whichwrap+=<,>,[,],h,l"
 vim.cmd [[set iskeyword+=-]]
+
