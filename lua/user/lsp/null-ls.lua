@@ -26,5 +26,8 @@ null_ls.setup({
     formatting.mdformat,
     formatting.shformat,
     formatting.yamlfmt,
+    formatting.rustfmt.with({
+			extra_args = { "--edition=2021" },
+		}),
   },
 })

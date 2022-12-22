@@ -90,6 +90,13 @@ for _, server in pairs(servers) do
     opts.settings = gopls.settings
   end
 
+  if server == "tsserver" then
+    local tsserver_ok, tsserver_opts = pcall(require, "user.lsp.settings.tsserver")
+    if tsserver_ok then
+      opts = vim.tbl_deep_extend("force", tsserver_opts, opts)
+    end
+  end
+
   lspconfig[server].setup(opts)
   ::continue::
 end
